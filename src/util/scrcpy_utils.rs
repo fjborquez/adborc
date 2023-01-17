@@ -97,7 +97,7 @@ pub const SCRCPY_SHORTCUT_HELP: &str = r"
     Drag & drop non-APK file
         Push file to device (see --push-target)";
 
-#[derive(Args)]
+#[derive(Args, Clone)]
 pub struct ScrcpyCliArgs {
     /// Limit both the width and height of the video to value. The other dimension is computed so that the device
     /// aspect-ratio is preserved. Default: 1920.
