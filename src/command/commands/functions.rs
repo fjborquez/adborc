@@ -1,7 +1,4 @@
-use crate::command::commands::commands::Commands;
-use crate::command::commands::consumer::command_processor::process_consumer_command;
-use crate::command::commands::marketmaker::command_processor::process_marketmaker_command;
-use crate::command::commands::supplier::command_processor::process_supplier_command;
+use crate::command::commands::processors::processable::Processable;
 use crate::command::daemon::functions::init_background_task;
 use crate::command::network::functions;
 use crate::command::network::functions::{
@@ -10,6 +7,14 @@ use crate::command::network::functions::{
 use crate::market::request::SysStateRequest;
 use crate::net::TCPClient;
 use crate::util::SysStateDefaultConfig;
+use clap::Subcommand;
+use crate::command::commands::commands::Commands;
+use crate::command::commands::processors::consumer_processor::ConsumerProcessor;
+use crate::command::commands::processors::marketmaker_processor::MarketMakerProcessor;
+use crate::command::commands::processors::supplier_processor::SupplierProcessor;
+use crate::command::commands::subcommands::consumer::ConsumerCommands;
+use crate::command::commands::subcommands::marketmaker::MarketMakerCommands;
+use crate::command::commands::subcommands::supplier::SupplierCommands;
 
 pub fn process_command(command: Commands, client: TCPClient) {
     match command {
@@ -29,9 +34,15 @@ pub fn process_command(command: Commands, client: TCPClient) {
             },
             &client,
         ),
-        Commands::Marketmaker(cmd)  => process_marketmaker_command(cmd, client),
-        Commands::Supplier(cmd) => process_supplier_command( cmd, client),
-        Commands::Consumer(cmd) => process_consumer_command( cmd, client),
+        Commands::Marketmaker(cmd) => {
+            subcommand_execution::<MarketMakerCommands, MarketMakerProcessor>(cmd, client)
+        },
+        Commands::Supplier(cmd) => {
+            subcommand_execution::<SupplierCommands, SupplierProcessor>(cmd, client)
+        },
+        Commands::Consumer(cmd) => {
+            subcommand_execution::<ConsumerCommands, ConsumerProcessor>(cmd, client)
+        }
         _ => {
             println!("Not yet implemented");
         }
@@ -78,4 +89,11 @@ pub fn setup_listener(command: Commands) {
             "System listener is not running. Use \"adborc init\" to start the system listener."
         );
     }
+}
+
+pub fn subcommand_execution<T: Subcommand, P: Processable<T>>(
+    command: T,
+    client: TCPClient
+) -> () {
+    P::process(command, client);
 }

@@ -1,8 +1,7 @@
-use crate::command::commands::{
-    consumer::subcommand::ConsumerCommands, marketmaker::subcommand::MarketMakerCommands,
-    supplier::subcommand::SupplierCommands,
-};
 use clap::Subcommand;
+use crate::command::commands::subcommands::consumer::ConsumerCommands;
+use crate::command::commands::subcommands::marketmaker::MarketMakerCommands;
+use crate::command::commands::subcommands::supplier::SupplierCommands;
 
 #[derive(Subcommand, Clone)]
 pub enum Commands {
