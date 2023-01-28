@@ -11,8 +11,10 @@ use crate::command::commands::subcommands::consumer::ConsumerCommands;
 pub struct ConsumerProcessor {}
 
 impl Processable<ConsumerCommands> for ConsumerProcessor  {
-    fn process(command: ConsumerCommands, client: TCPClient) -> () {
-        match command {
+    fn process(command: &ConsumerCommands, client: TCPClient) -> () {
+        let _command = command.to_owned();
+
+        match _command {
             ConsumerCommands::Status => {
                 let response = send_request(ConsumerRequest::Status, &client);
                 println!("{}", response);

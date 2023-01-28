@@ -1,11 +1,17 @@
 use crate::command::filesystem::functions::create_file;
 use std::fs::File;
 use std::io;
+use std::io::Write;
 use std::path::PathBuf;
+use crate::command::commands::commands::Commands;
+use crate::command::mangen::consumer_mangen::ConsumerMangen;
+use crate::command::mangen::generable::Generable;
+use crate::command::mangen::marketmaker_mangen::MarketMakerMangen;
+use crate::command::mangen::supplier_mangen::SupplierMangen;
 
-pub fn print_mangen_error(result: &io::Result<()>, message: &str) {
+pub fn print_mangen_error(result: &io::Result<()>, message: String) {
     let error_message: String = result.as_ref().unwrap_err().to_string();
-    let mut temp_message: String = message.to_string();
+    let mut temp_message: String = message;
     temp_message.push_str(" ");
     temp_message.push_str(error_message.as_str());
 
@@ -21,32 +27,32 @@ pub fn create_man_page(path: PathBuf) -> File {
 
 #[cfg(feature = "mangen")]
 pub fn print_mangen(
-    command: &Command,
-    section: &str,
-    message: &str,
+    &mut command: &Command,
+    section: String,
+    message: String,
     out_file: &mut dyn Write,
-    path: &PathBuf,
+    path: &String,
 ) {
     use clap::Command;
     use clap_mangen::Man;
 
-    let man_page = Man::new(command.to_owned());
+    let man_page = Man::new(command);
     let mut result;
 
     match section {
-        "title" => result = man_page.render_title(out_file),
-        "section" => result = man_page.render_name_section(out_file),
-        "synopsis" => result = man_page.render_synopsis_section(out_file),
-        "description" => result = man_page.render_description_section(out_file),
-        "options" => result = man_page.render_options_section(out_file),
-        "subcommands" => result = man_page.render_subcommands_section(out_file),
-        "authors" => result = man_page.render_authors_section(out_file),
-        "version" => result = man_page.render_version_section(out_file),
+        String::from("title") => result = man_page.render_title(out_file),
+        String::from("section") => result = man_page.render_name_section(out_file),
+        String::from("synopsis") => result = man_page.render_synopsis_section(out_file),
+        String::from("description") => result = man_page.render_description_section(out_file),
+        String::from("options") => result = man_page.render_options_section(out_file),
+        String::from("subcommands") => result = man_page.render_subcommands_section(out_file),
+        String::from("authors") => result = man_page.render_authors_section(out_file),
+        String::from("version") => result = man_page.render_version_section(out_file),
         &_ => panic!("There is no such section"),
     }
 
     print_mangen_error(&result, message);
-    println!("Wrote man page to {}", path.display());
+    println!("Wrote man page to {}", path);
 }
 
 /// Implementation for mangen command, available only when mangen feature is enabled.
@@ -62,95 +68,79 @@ pub fn create_mangen(path: Option<String>) {
     let path = create_path(path);
     let file = create_man_page(path);
 
-    let mut out_file = file.unwrap();
-    let cli_command = Cli::command();
-    let marketmaker_subcommand = cli_command.find_subcommand("marketmaker").unwrap();
-    let supplier_subcommand = cli_command.find_subcommand("supplier").unwrap();
-    let consumer_subcommand = cli_command.find_subcommand("consumer").unwrap();
+    let &mut out_file = file.unwrap();
+    let &mut cli_command = Cli::command();
+    let path_text: String = path.into_os_string().into_string().unwrap();
+
+    generate_subcommand_mangen(cli_command, out_file, &path_text);
 
     // TODO: Should we be using the render method instead setting up every page section?
     // TODO: Iterate
     print_mangen(
         &cli_command,
-        "title",
-        "Error generating man page title:",
+        String::from("title"),
+                     String::from("Error generating man page title:"),
         out_file,
-        &path,
+        &path_text,
     );
     print_mangen(
         &cli_command,
-        "section",
-        "Error generating man page name section:",
+        String::from("section"),
+                     String::from("Error generating man page name section:"),
         out_file,
-        &path,
+        &path_text
+        ,
     );
     print_mangen(
         &cli_command,
-        "synopsis",
-        "Error generating man page synopsis:",
+        String::from("synopsis"),
+                     String::from("Error generating man page synopsis:"),
         out_file,
-        &path,
+        &path_text,
     );
     print_mangen(
         &cli_command,
-        "description",
-        "Error generating man page description:",
+        String::from("description"),
+                     String::from("Error generating man page description:"),
         out_file,
-        &path,
+        &path_text,
     );
     print_mangen(
         &cli_command,
-        "options",
-        "Error generating man page options:",
+        String::from("options"),
+                     String::from("Error generating man page options:"),
         out_file,
-        &path,
+        &path_text,
     );
     print_mangen(
         &cli_command,
-        "subcommands",
-        "Error generating man page subcommands:",
+        String::from("subcommands"),
+                     String::from("Error generating man page subcommands:"),
         out_file,
-        &path,
-    );
-
-    // TODO: every subcommand should have its own mangen file
-    print_mangen(
-        marketmaker_subcommand,
-        "subcommands",
-        "Error writing MarketMaker subcommands:",
-        out_file,
-        &path,
-    );
-    print_mangen(
-        supplier_subcommand,
-        "subcommands",
-        "Error writing Supplier subcommands:",
-        out_file,
-        &path,
-    );
-    print_mangen(
-        consumer_subcommand,
-        "subcommands",
-        "Error writing Consumer subcommands:",
-        out_file,
-        &path,
+        &path_text,
     );
 
     print_mangen(
         &cli_command,
-        "version",
-        "Error generating man page version section:",
+        String::from("version"),
+                     String::from("Error generating man page version section:"),
         out_file,
-        &path,
+        &path_text,
     );
     print_mangen(
         &cli_command,
-        "authors",
-        "Error generating man page authors section:",
+        String::from("authors"),
+                     String::from("Error generating man page authors section:"),
         out_file,
-        &path,
+        &path_text,
     );
 
     println!("Wrote man page to {}", path.join("adborc.man").display());
     return;
+}
+
+pub fn generate_subcommand_mangen(command: &Commands, file: &mut dyn Write, path: &String) -> () {
+    MarketMakerMangen::generate(command, file, path);
+    SupplierMangen::generate(command, file, path);
+    ConsumerMangen::generate(command, file, path);
 }

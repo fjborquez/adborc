@@ -16,7 +16,7 @@ use crate::command::commands::subcommands::consumer::ConsumerCommands;
 use crate::command::commands::subcommands::marketmaker::MarketMakerCommands;
 use crate::command::commands::subcommands::supplier::SupplierCommands;
 
-pub fn process_command(command: Commands, client: TCPClient) {
+pub fn process_command(command: &Commands, client: TCPClient) {
     match command {
         Commands::Status => functions::print_response(SysStateRequest::GetState, &client),
         Commands::Shutdown => functions::print_response(SysStateRequest::Shutdown, &client),
@@ -62,13 +62,13 @@ pub fn init() {
     }
 }
 
-pub fn execute_command(command: Commands) {
+pub fn execute_command(command: &Commands) {
     let client = TCPClient::new("127.0.0.1", SysStateDefaultConfig::BIND_PORT).unwrap();
     check_client_compatibility(&client);
     process_command(command, client);
 }
 
-pub fn setup_mangen(_command: Commands) {
+pub fn setup_mangen(_command: &Commands) {
     #[cfg(feature = "mangen")]
     {
         use crate::command::mangen::functions::create_mangen;
@@ -80,7 +80,7 @@ pub fn setup_mangen(_command: Commands) {
     }
 }
 
-pub fn setup_listener(command: Commands) {
+pub fn setup_listener(command: &Commands) {
     // Process 'init' command separately.
     if let Commands::Init = command {
         init();
@@ -92,8 +92,8 @@ pub fn setup_listener(command: Commands) {
 }
 
 pub fn subcommand_execution<T: Subcommand, P: Processable<T>>(
-    command: T,
+    command: &T,
     client: TCPClient
 ) -> () {
-    P::process(command, client);
+    P::process(&command, client);
 }

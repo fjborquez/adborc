@@ -7,8 +7,10 @@ use crate::command::network::functions::send_request;
 pub struct SupplierProcessor {}
 
 impl Processable<SupplierCommands> for SupplierProcessor  {
-    fn process(command: SupplierCommands, client: TCPClient) -> () {
-        match command {
+    fn process(command: &SupplierCommands, client: TCPClient) -> () {
+        let _command = command.to_owned();
+
+        match _command {
             SupplierCommands::Status => {
                 let response = send_request(SupplierRequest::Status, &client);
                 println!("{}", response);

@@ -1,6 +1,6 @@
+use clap::{Parser};
 use adborc::command::commands::commands::Commands;
 use adborc::command::commands::functions::{execute_command, setup_listener, setup_mangen};
-use clap::Parser;
 
 #[derive(Parser)]
 #[clap(name="adborc", author, version, about, long_about = None)]
@@ -11,8 +11,8 @@ pub struct Cli {
 
 impl Cli {
     pub fn process(self) {
-        setup_mangen(self.command.clone());
-        setup_listener(self.command.clone());
-        execute_command(self.command.clone());
+        setup_mangen(&self.command);
+        setup_listener(&self.command);
+        execute_command(&self.command);
     }
 }

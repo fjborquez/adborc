@@ -7,8 +7,10 @@ use crate::command::network::functions::send_request;
 pub struct MarketMakerProcessor {}
 
 impl Processable<MarketMakerCommands> for MarketMakerProcessor {
-    fn process(command: MarketMakerCommands, client: TCPClient) -> () {
-        match command {
+    fn process(command: &MarketMakerCommands, client: TCPClient) -> () {
+        let _command = command.to_owned();
+
+        match _command {
             MarketMakerCommands::Status => {
                 let response = send_request(MarketMakerRequest::Status, &client);
                 println!("{}", response);
