@@ -56,7 +56,7 @@ pub(crate) fn test_with_logs() {
     }
 }
 
-mod scrcpy_utils;
+mod functions;
 
 /// Utils related to `adb` and `scrcpy`.
 pub mod adb_utils {
@@ -73,7 +73,7 @@ pub mod adb_utils {
     use std::process::{Child, Command, Stdio};
     use std::sync::Mutex;
     // We re-export all the scrcpy_utils from adb_utils.
-    pub use scrcpy_utils::*;
+    pub use functions::*;
 
     #[cfg(windows)]
     use std::os::windows::process::CommandExt;

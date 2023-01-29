@@ -1,4 +1,4 @@
-use crate::util::adb_utils::ScrCpyArgs;
+use crate::scrcpy::adb_utils::ScrCpyArgs;
 
 use super::{supplier::SupplierStateMin, DeviceFilterVec, *};
 use consumer::ConsumerStateMin;

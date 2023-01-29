@@ -1,6 +1,6 @@
 use super::*;
 use crate::market::test_utils;
-use crate::util::{test_with_logs, SysStateDefaultConfig};
+use crate::scrcpy::{test_with_logs, SysStateDefaultConfig};
 use serial_test::serial;
 use tokio::task;
 

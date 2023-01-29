@@ -6,7 +6,7 @@ use crate::command::network::functions::{
 };
 use crate::market::request::SysStateRequest;
 use crate::net::TCPClient;
-use crate::util::SysStateDefaultConfig;
+use crate::scrcpy::SysStateDefaultConfig;
 use clap::Subcommand;
 use crate::command::commands::commands::Commands;
 use crate::command::commands::processors::consumer_processor::ConsumerProcessor;

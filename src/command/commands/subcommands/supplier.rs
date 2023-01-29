@@ -1,4 +1,4 @@
-use crate::util::SysStateDefaultConfig;
+use crate::scrcpy::SysStateDefaultConfig;
 use clap::Subcommand;
 
 #[derive(Subcommand, Clone)]

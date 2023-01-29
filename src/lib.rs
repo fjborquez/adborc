@@ -63,7 +63,7 @@
 //!     market::{SysState, request::
 //!             {Request, ToJson, SysStateRequest, SysStateResponse}},
 //!     net::TCPClient,
-//!     util::SysStateDefaultConfig
+//!     scrcpy::SysStateDefaultConfig
 //! };
 //!
 //! // start the system in a separate thread.
@@ -82,7 +82,7 @@ pub mod net;
 
 pub mod market;
 
-pub mod util;
+pub mod scrcpy;
 
 pub mod command;
 

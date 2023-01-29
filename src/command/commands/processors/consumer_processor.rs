@@ -3,8 +3,8 @@ use crate::command::network::functions::send_request;
 use crate::market::request::{ConsumerRequest, ConsumerResponse, Response, SysStateRequest};
 use crate::market::{DeviceFilter, DeviceFilterVec};
 use crate::net::TCPClient;
-use crate::util::adb_utils;
-use crate::util::adb_utils::SCRCPY_SHORTCUT_HELP;
+use crate::scrcpy::adb_utils;
+use crate::scrcpy::adb_utils::SCRCPY_SHORTCUT_HELP;
 use std::collections::HashSet;
 use crate::command::commands::subcommands::consumer::ConsumerCommands;
 

@@ -6,13 +6,13 @@ impl BackgroundTask for UnixBackgroundTask {
     fn execute(&self) -> () {
         #[cfg(unix)]
         {
-            use crate::util;
+            use crate::scrcpy;
             use daemonize::Daemonize;
             use log::error;
             use log::info;
             use std::env;
             use std::fs::OpenOptions;
-            use util::{PID_FILE, STDERR_LOGFILE, STDOUT_LOGFILE};
+            use scrcpy::{PID_FILE, STDERR_LOGFILE, STDOUT_LOGFILE};
 
             let temp_dir = env::temp_dir();
             let stdout_logfile = temp_dir.join(STDOUT_LOGFILE);

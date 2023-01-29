@@ -6,7 +6,7 @@ use log::error;
 use crate::market::request::{Response, SysStateRequest, SysStateResponse, ToJson};
 use crate::market::SysState;
 use crate::net::TCPClient;
-use crate::util::{ADBORC_VERSION, SysStateDefaultConfig};
+use crate::scrcpy::{ADBORC_VERSION, SysStateDefaultConfig};
 
 pub fn send_request<T>(request: T, client: &TCPClient) -> Response
 where

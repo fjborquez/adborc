@@ -2,7 +2,7 @@
 mod tests;
 
 use super::*;
-use crate::util::adb_utils::ScrCpyArgs;
+use crate::scrcpy::adb_utils::ScrCpyArgs;
 use portpicker;
 use request::{ConsumerRequest, ConsumerResponse, MarketMakerRequest, MarketMakerResponse};
 use std::default::Default;

@@ -7,7 +7,7 @@ mod marketmaker;
 mod supplier;
 
 use crate::net::{CommandServer, PortForwardMode, PortForwarder, ProcessFn, TCPClient};
-use crate::util::{
+use crate::scrcpy::{
     adb_utils::{self, AdbVersionInfo, DeviceInfo, ScrcpyVersionInfo},
     SysStateDefaultConfig, ADBORC_VERSION, HEARTBEAT_INTERVAL, MIN_ADB_REV, MIN_ADB_VER,
     MIN_SCRCPY_VER, UNDERTAKER_INTERVAL,
@@ -1143,7 +1143,7 @@ mod test_utils {
 mod tests {
     use super::*;
     use crate::net::TCPClient;
-    use crate::util::{test_with_logs, SysStateDefaultConfig};
+    use crate::scrcpy::{test_with_logs, SysStateDefaultConfig};
     use request::{MarketMakerRequest, MarketMakerResponse};
     use serial_test::serial;
 

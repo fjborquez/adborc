@@ -3,7 +3,7 @@ use std::net::{IpAddr, Ipv4Addr};
 use tokio::task;
 
 use super::*;
-use crate::{market::test_utils, util::test_with_logs};
+use crate::{market::test_utils, scrcpy::test_with_logs};
 
 #[test]
 #[serial]

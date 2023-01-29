@@ -1,9 +1,9 @@
 //! This module contains utility functions for scrcpy.
-//! The contents of this module were part of the crate::util::adb_utils module.
+//! The contents of this module were part of the crate::scrcpy::adb_utils module.
 //! However, they were moved to this module because they got too big.
 //! This module is not meant to be used directly by the user.
 //! To avoid re-organizing the code, all the functions (which were part of adb_utils earlier)
-//! in this module are re-exported by the crate::util::adb_utils module.
+//! in this module are re-exported by the crate::scrcpy::adb_utils module.
 
 use super::*;
 use clap::Args;

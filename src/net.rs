@@ -22,7 +22,7 @@ use tokio::{
 
 use crate::market::{request::ToJson, Key, SystemKeypair};
 use crate::noise::Noise;
-use crate::util::{ADB_KILL_SERVER_COMMAND, CONNECTION_TIMEOUT};
+use crate::scrcpy::{ADB_KILL_SERVER_COMMAND, CONNECTION_TIMEOUT};
 
 /// Networking client which is used to send encrypted commands,
 /// receive encrypted responses from the server and decrypt them.
@@ -945,7 +945,7 @@ pub(crate) async fn parse_addr(host: &str, port: u16, lookup_dst: bool) -> io::R
 mod tests {
     use super::*;
     use crate::market::{request::*, SystemKeypair};
-    use crate::util::test_with_logs;
+    use crate::scrcpy::test_with_logs;
     use portpicker;
 
     struct ServerSpec;

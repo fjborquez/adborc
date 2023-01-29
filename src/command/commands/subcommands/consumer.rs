@@ -1,5 +1,5 @@
-use crate::util::adb_utils::ScrcpyCliArgs;
-use crate::util::SysStateDefaultConfig;
+use crate::scrcpy::adb_utils::ScrcpyCliArgs;
+use crate::scrcpy::SysStateDefaultConfig;
 use clap::Subcommand;
 
 #[derive(Subcommand, Clone)]
